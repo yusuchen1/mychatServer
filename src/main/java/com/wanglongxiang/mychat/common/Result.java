@@ -2,8 +2,10 @@ package com.wanglongxiang.mychat.common;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Result<T> {
+public class Result<T> implements Serializable {
     String message;
     T data;
     Integer code;
@@ -22,6 +24,8 @@ public class Result<T> {
         this.message = message;
         this.code = Code.SUCESS;
     }
+
+
 
     public Result(String message, Integer code) {
         this.message = message;

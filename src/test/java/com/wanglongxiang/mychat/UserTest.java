@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class UserTest {
     @Autowired
     UserMapper userMapper;
+
     @Test
     public void getByUsernameTest(){
     }

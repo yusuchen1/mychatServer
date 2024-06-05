@@ -7,3 +7,11 @@ spring:
 logging:
   level:
     root: INFO
+mychat:
+  jwt:
+#    设置jwt加密密钥
+    secret-key: xiaosu
+#    设置过期时间
+    ttl: 7200000
+#    前端传递过来的令牌名称
+    token-name: token

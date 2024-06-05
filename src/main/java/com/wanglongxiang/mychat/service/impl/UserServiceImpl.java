@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public void login(LoginUserDTO loginUserDTO) {
+    public User login(LoginUserDTO loginUserDTO) {
         String username = loginUserDTO.getUsername();
         String password = loginUserDTO.getPassword();
         User u = userMapper.getByUsername(username);
@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
         }else if(!u.getPassword().equals(password)){
             throw new PasswordErrorExecption(MessageConstant.PASSWORDERROR);
         }
+        return u;
     }
 
     @Override
