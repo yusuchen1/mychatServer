@@ -25,6 +25,11 @@ public class Result<T> implements Serializable {
         this.code = Code.SUCESS;
     }
 
+    public Result(T data) {
+        this.data = data;
+        this.code = Code.SUCESS;
+    }
+
 
 
     public Result(String message, Integer code) {

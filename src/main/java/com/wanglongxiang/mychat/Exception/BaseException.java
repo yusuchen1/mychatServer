@@ -1,17 +1,17 @@
-package com.wanglongxiang.mychat.Execption;
+package com.wanglongxiang.mychat.Exception;
 
-public class BaseExecption extends RuntimeException{
+public class BaseException extends RuntimeException{
     private Integer code;
-    public BaseExecption(String message) {
+    public BaseException(String message) {
         super(message);
     }
 
-    public BaseExecption(String message,Integer code) {
+    public BaseException(String message, Integer code) {
         super(message);
         this.code = code;
     }
 
-    public BaseExecption() {
+    public BaseException() {
     }
 
     public Integer getCode() {

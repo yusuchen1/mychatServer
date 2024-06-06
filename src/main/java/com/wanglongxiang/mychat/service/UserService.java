@@ -6,5 +6,5 @@ import com.wanglongxiang.mychat.pojo.entity.User;
 
 public interface UserService {
     public User login(LoginUserDTO loginUserDTO);
-    public void register(RegisterUserDTO registerUserDTO);
+    public User register(RegisterUserDTO registerUserDTO);
 }

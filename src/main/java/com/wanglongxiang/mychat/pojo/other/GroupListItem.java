@@ -1,0 +1,15 @@
+package com.wanglongxiang.mychat.pojo.other;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GroupListItem {
+    private Long id;
+    private String avatar;
+    private String name;
+    private String nmessage;
+}

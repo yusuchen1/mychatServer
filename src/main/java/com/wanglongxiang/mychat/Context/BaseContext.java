@@ -5,7 +5,7 @@ public class BaseContext {
     public static void setContext(Long id){
         threadLocal.set(id);
     }
-    public static Long getContext(Long id){
+    public static Long getContext(){
         return threadLocal.get();
     }
     public static void removeContext(){

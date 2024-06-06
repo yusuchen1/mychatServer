@@ -1,8 +1,8 @@
 package com.wanglongxiang.mychat.service.impl;
 
-import com.wanglongxiang.mychat.Execption.UserExecption.PasswordErrorExecption;
-import com.wanglongxiang.mychat.Execption.UserExecption.UserExistExecption;
-import com.wanglongxiang.mychat.Execption.UserExecption.UserNotFoundExecption;
+import com.wanglongxiang.mychat.Exception.UserException.PasswordErrorException;
+import com.wanglongxiang.mychat.Exception.UserException.UserExistException;
+import com.wanglongxiang.mychat.Exception.UserException.UserNotFoundException;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.common.constant.UserConstant;
 import com.wanglongxiang.mychat.mapper.UserMapper;
@@ -26,22 +26,23 @@ public class UserServiceImpl implements UserService {
         String password = loginUserDTO.getPassword();
         User u = userMapper.getByUsername(username);
         if(u == null){
-            throw new UserNotFoundExecption(MessageConstant.USERNOTFOUND);
+            throw new UserNotFoundException(MessageConstant.USERNOTFOUND);
         }else if(!u.getPassword().equals(password)){
-            throw new PasswordErrorExecption(MessageConstant.PASSWORDERROR);
+            throw new PasswordErrorException(MessageConstant.PASSWORDERROR);
         }
         return u;
     }
 
     @Override
-    public void register(RegisterUserDTO registerUserDTO) {
+    public User register(RegisterUserDTO registerUserDTO) {
         User user = new User();
         BeanUtils.copyProperties(registerUserDTO,user);
         user.setAvatar(UserConstant.defaultAvatar);
         User u = userMapper.getByUsername(user.getUsername());
         if(u != null){
-            throw new UserExistExecption(MessageConstant.USEREXIST);
+            throw new UserExistException(MessageConstant.USEREXIST);
         }
         userMapper.save(user);
+        return user;
     }
 }

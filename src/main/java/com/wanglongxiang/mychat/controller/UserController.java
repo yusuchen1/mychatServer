@@ -2,11 +2,13 @@ package com.wanglongxiang.mychat.controller;
 
 import com.wanglongxiang.mychat.common.Code;
 import com.wanglongxiang.mychat.common.Result;
+import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.common.constant.UserConstant;
 import com.wanglongxiang.mychat.pojo.dto.LoginUserDTO;
 import com.wanglongxiang.mychat.pojo.dto.RegisterUserDTO;
 import com.wanglongxiang.mychat.pojo.entity.User;
 import com.wanglongxiang.mychat.properties.JwtProperties;
+import com.wanglongxiang.mychat.service.CronyGroupService;
 import com.wanglongxiang.mychat.service.UserService;
 import com.wanglongxiang.mychat.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,8 @@ public class UserController {
     UserService userService;
     @Autowired
     JwtProperties jwtProperties;
+    @Autowired
+    CronyGroupService cronyGroupService;
 
     @GetMapping("/login")
     public Result login(LoginUserDTO loginUserDTO){
@@ -38,7 +42,8 @@ public class UserController {
     @PostMapping("/register")
     public Result register(@RequestBody RegisterUserDTO registerUserDTO){
         log.info("现在开始注册用户：{}",registerUserDTO);
-        userService.register(registerUserDTO);
+        User register = userService.register(registerUserDTO);
+        cronyGroupService.save(register.getId(), MessageConstant.DEFAULTCRONYGROUP);
         return Result.success("注册成功!");
     }
 }
