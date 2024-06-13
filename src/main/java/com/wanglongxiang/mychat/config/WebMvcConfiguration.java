@@ -29,7 +29,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         log.info("正在注册拦截器...");
         registry.addInterceptor(userInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/**","/swagger*","/v2/**");
+                .excludePathPatterns("/user/login","/user/register","/swagger*","/v2/**");
         super.addInterceptors(registry);
     }
 

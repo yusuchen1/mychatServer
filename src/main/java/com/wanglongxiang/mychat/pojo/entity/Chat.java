@@ -26,5 +26,5 @@ public class Chat {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
 
-    private String context;
+    private String content;
 }

@@ -1,6 +1,6 @@
 package com.wanglongxiang.mychat.service.impl;
 
-import com.wanglongxiang.mychat.Exception.cronyException.CronyGroupExistException;
+import com.wanglongxiang.mychat.exception.cronyException.CronyGroupExistException;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.mapper.CronyGroupMapper;
 import com.wanglongxiang.mychat.pojo.entity.CronyGroup;

@@ -1,7 +1,7 @@
 package com.wanglongxiang.mychat.interceptor;
 
-import com.wanglongxiang.mychat.Context.BaseContext;
-import com.wanglongxiang.mychat.Exception.UserException.UserUnLoginException;
+import com.wanglongxiang.mychat.context.BaseContext;
+import com.wanglongxiang.mychat.exception.UserException.UserUnLoginException;
 import com.wanglongxiang.mychat.common.Code;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.common.constant.UserConstant;

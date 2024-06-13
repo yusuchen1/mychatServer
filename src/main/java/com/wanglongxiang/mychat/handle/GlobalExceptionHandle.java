@@ -1,6 +1,6 @@
 package com.wanglongxiang.mychat.handle;
 
-import com.wanglongxiang.mychat.Exception.BaseException;
+import com.wanglongxiang.mychat.exception.BaseException;
 import com.wanglongxiang.mychat.common.Code;
 import com.wanglongxiang.mychat.common.Result;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
@@ -30,6 +30,7 @@ public class GlobalExceptionHandle {
     * */
     @ExceptionHandler({Exception.class})
     public Result h2(Exception e){
+        e.printStackTrace();
         return new Result(MessageConstant.SYSTEMERROR, Code.PROGRAMERROR);
     }
 }

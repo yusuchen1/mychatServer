@@ -1,6 +1,6 @@
-package com.wanglongxiang.mychat.Exception.UserException;
+package com.wanglongxiang.mychat.exception.UserException;
 
-import com.wanglongxiang.mychat.Exception.BaseException;
+import com.wanglongxiang.mychat.exception.BaseException;
 
 public class UserNotFoundException extends BaseException {
     public UserNotFoundException(String message) {

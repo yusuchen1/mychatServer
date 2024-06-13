@@ -1,4 +1,4 @@
-package com.wanglongxiang.mychat.Exception;
+package com.wanglongxiang.mychat.exception;
 
 public class BaseException extends RuntimeException{
     private Integer code;
@@ -12,6 +12,7 @@ public class BaseException extends RuntimeException{
     }
 
     public BaseException() {
+
     }
 
     public Integer getCode() {

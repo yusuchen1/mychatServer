@@ -1,4 +1,4 @@
-package com.wanglongxiang.mychat.Context;
+package com.wanglongxiang.mychat.context;
 
 public class BaseContext {
     public static ThreadLocal<Long>threadLocal = new ThreadLocal<>();

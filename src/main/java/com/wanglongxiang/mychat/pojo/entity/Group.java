@@ -14,6 +14,9 @@ public class Group {
     @TableField(value = "groupavatar")
     private String groupAvater;
 
+    @TableField(value = "group_number")
+    private Long groupNumber;
+
     @TableField(value = "groupname")
     private String groupName;
 

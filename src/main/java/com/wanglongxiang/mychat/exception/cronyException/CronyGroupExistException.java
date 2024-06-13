@@ -1,6 +1,6 @@
-package com.wanglongxiang.mychat.Exception.cronyException;
+package com.wanglongxiang.mychat.exception.cronyException;
 
-import com.wanglongxiang.mychat.Exception.BaseException;
+import com.wanglongxiang.mychat.exception.BaseException;
 
 public class CronyGroupExistException extends BaseException {
     public CronyGroupExistException(String message) {

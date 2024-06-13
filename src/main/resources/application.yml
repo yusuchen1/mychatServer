@@ -15,3 +15,6 @@ mychat:
     ttl: 7200000
 #    前端传递过来的令牌名称
     token-name: token
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

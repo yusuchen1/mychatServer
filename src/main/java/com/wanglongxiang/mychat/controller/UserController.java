@@ -1,16 +1,21 @@
 package com.wanglongxiang.mychat.controller;
 
+import com.wanglongxiang.mychat.context.BaseContext;
 import com.wanglongxiang.mychat.common.Code;
 import com.wanglongxiang.mychat.common.Result;
+import com.wanglongxiang.mychat.common.ResultPage;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.common.constant.UserConstant;
 import com.wanglongxiang.mychat.pojo.dto.LoginUserDTO;
 import com.wanglongxiang.mychat.pojo.dto.RegisterUserDTO;
+import com.wanglongxiang.mychat.pojo.dto.SearchUserDTO;
 import com.wanglongxiang.mychat.pojo.entity.User;
 import com.wanglongxiang.mychat.properties.JwtProperties;
 import com.wanglongxiang.mychat.service.CronyGroupService;
 import com.wanglongxiang.mychat.service.UserService;
 import com.wanglongxiang.mychat.utils.JwtUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@Api(tags = {"用户相关接口"})
 public class UserController {
     @Autowired
     UserService userService;
@@ -30,6 +36,7 @@ public class UserController {
     CronyGroupService cronyGroupService;
 
     @GetMapping("/login")
+    @ApiOperation("用户登录")
     public Result login(LoginUserDTO loginUserDTO){
         log.info("用户正在登录:{}",loginUserDTO);
         User u = userService.login(loginUserDTO);
@@ -40,10 +47,20 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @ApiOperation("用户注册")
     public Result register(@RequestBody RegisterUserDTO registerUserDTO){
         log.info("现在开始注册用户：{}",registerUserDTO);
         User register = userService.register(registerUserDTO);
         cronyGroupService.save(register.getId(), MessageConstant.DEFAULTCRONYGROUP);
         return Result.success("注册成功!");
+    }
+
+    @GetMapping("/searchUser")
+    @ApiOperation("查询用户")
+    public Result<ResultPage> searchUser(SearchUserDTO searchUserDTO){
+        Long userId = BaseContext.getContext();
+        log.info("现在正在查询用户:{},userId:{}",searchUserDTO,userId);
+        ResultPage resultPage = userService.searchUser(searchUserDTO, userId);
+        return new Result<>(resultPage);
     }
 }
