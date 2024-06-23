@@ -20,58 +20,58 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @Component
 @ServerEndpoint(value = "/ws/{jwt}")
 public class EchoChannel {
-    @Autowired
-    JwtProperties jwtProperties;
+    public static final String SecretKey = "xiaosu";
 
-    public static Map<Long,Session> sessions = new HashMap<>();
+    public static Map<Long, Session> sessions = new HashMap<>();
+
     /*
-    * 连接时调用
-    * */
+     * 连接时调用
+     * */
     @OnOpen
-    public void onOpen(@PathParam("jwt") String jwt, Session session, EndpointConfig endpointConfig){
+    public void onOpen(@PathParam("jwt") String jwt, Session session, EndpointConfig endpointConfig) {
         Long userId = getUserId(jwt);
 //        将session存入map中
-        log.info("正在为用户：{}建立webSocket连接",userId);
-        sessions.put(userId,session);
+        log.info("正在为用户：{}建立webSocket连接", userId);
+        sessions.put(userId, session);
     }
 
     @OnMessage
-    public void onMessage(String message){
-        log.info("前端发来消息:{}",message);
+    public void onMessage(String message) {
+        log.info("前端发来消息:{}", message);
     }
 
     @OnClose
-    public void onClose(@PathParam("jwt") String jwt, CloseReason closeReason){
+    public void onClose(@PathParam("jwt") String jwt, CloseReason closeReason) {
         Long userId = getUserId(jwt);
-        log.info("{}连接断开...",userId);
+        log.info("{}连接断开...", userId);
     }
 
     @OnError
-    public void onError(@PathParam("jwt") String jwt,Throwable throwable) throws IOException {
+    public void onError(@PathParam("jwt") String jwt, Throwable throwable) throws IOException {
         Long userId = getUserId(jwt);
         log.info("连接异常关闭...");
         // 关闭连接。状态码为 UNEXPECTED_CONDITION（意料之外的异常）
         sessions.get(userId).close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, throwable.getMessage()));
     }
 
-    public void sendClientByUids(LChatVO chatVOS , Long... uids) throws IOException {
-        for (Long uid : uids) {
-            Result<LChatVO> result = new Result<>("聊天消息",chatVOS, Code.SUCESS);
-            Session session = sessions.get(uid);
-            if(session != null){
-                log.info("正在给uid:{}发送消息",uid);
-                session.getBasicRemote().sendText(JSON.toJSONString(result));
-            }
+    public void sendClientByUid(LChatVO chatVOS, Long uid) throws IOException {
+        Result<LChatVO> result = new Result<>("聊天消息", chatVOS, Code.SUCESS);
+        Session session = sessions.get(uid);
+        if (session != null) {
+            log.info("正在给uid:{}发送消息", uid);
+            session.getBasicRemote().sendText(JSON.toJSONString(result));
         }
     }
 
-    public Long getUserId(String jwt){
-        Claims claims = JwtUtils.parseJWT("xiaosu",jwt);
+
+    public Long getUserId(String jwt) {
+        Claims claims = JwtUtils.parseJWT(SecretKey, jwt);
         return claims.get(UserConstant.UID, Long.class);
     }
 }

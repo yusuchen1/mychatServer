@@ -15,6 +15,16 @@ mychat:
     ttl: 7200000
 #    前端传递过来的令牌名称
     token-name: token
+  alioss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: LTAI5tCXiwTCFQLQNn88Nmkq
+    access-key-secret: uv0qVt7yh0qjMIV5UUOUPkItJiSAsF
+    bucket-name: sc-mychat
+
 #mybatis:
 #  configuration:
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

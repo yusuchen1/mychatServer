@@ -10,14 +10,14 @@
     <select id="searchByUsernameOrNickname" resultType="com.wanglongxiang.mychat.pojo.entity.User">
         select *
         from user
-        where id != #{userId} and (username like concat('%',#{key},'%') OR nickname like concat('%',#{key},'%'))
+        where id != #{userId} and id != #{robotId} and (username like concat('%',#{key},'%') OR nickname like concat('%',#{key},'%'))
         limit #{page},#{size};
     </select>
 
     <select id="searchCountByUsernameOrNickname" resultType="java.lang.Integer">
         select count(*)
         from user
-        where (nickname like concat('%',#{key},'%') or username like concat('%',#{key},'%')) and id != #{userId};
+        where (nickname like concat('%',#{key},'%') or username like concat('%',#{key},'%')) and id != #{userId} and id != #{robotId};
     </select>
 
 

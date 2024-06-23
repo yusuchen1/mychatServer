@@ -11,15 +11,21 @@ import lombok.NoArgsConstructor;
 public class Group {
     private Long id;
 
-    @TableField(value = "groupavatar")
-    private String groupAvater;
+    @TableField(value = "avatar")
+    private String avatar;
 
-    @TableField(value = "group_number")
-    private Long groupNumber;
+    @TableField(value = "number")
+    private String number;
 
-    @TableField(value = "groupname")
-    private String groupName;
+    @TableField(value = "name")
+    private String name;
 
-    @TableField(value = "groupnum")
-    private Integer groupNum;
+    @TableField(value = "num")
+    private Integer num;
+
+    @TableField(value = "makeuid")
+    private Long makeUid;
+
+    @TableField(value = "makeusername")
+    private String makeUsername;
 }

@@ -50,13 +50,25 @@ public class CommonServiceImpl implements CommonService {
             groupIds.add(groupMember.getGroupId());
         }
         if(groupIds.size() != 0){
-            List<Group> groups = groupMapper.selectBatchIds(groupIds);
+            List<Group> groups = groupMapper.getByIds(groupIds);
             for (Group group : groups) {
                 GroupListItem groupListItem = new GroupListItem();
                 groupListItem.setId(group.getId());
-                groupListItem.setAvatar(group.getGroupAvater());
-                groupListItem.setName(group.getGroupName());
-//            TODO 插入群组的最新一条消息
+                groupListItem.setAvatar(group.getAvatar());
+                groupListItem.setName(group.getName());
+//            TODO 插入群组的消息集合
+                List<Chat> chats = chatMapper.selectByGid(group.getId());
+                List<ChatVO> chatVOS = new ArrayList<>();
+                for (Chat chat : chats) {
+                    ChatVO chatVO = new ChatVO();
+                    BeanUtils.copyProperties(chat,chatVO);
+                    User user = userMapper.selectById(chatVO.getSendUid());
+                    chatVO.setAvatar(user.getAvatar());
+                    chatVO.setNickname(user.getNickname());
+                    chatVO.setMe(user.getId().equals(userId));
+                    chatVOS.add(chatVO);
+                }
+                groupListItem.setChats(chatVOS);
                 groupList.add(groupListItem);
             }
         }
@@ -82,7 +94,6 @@ public class CommonServiceImpl implements CommonService {
                 cronyListItem.setAvatar(user.getAvatar());
                 cronyListItem.setId(user.getId());
                 cronyListItem.setName(c.getDescription());
-//                TODO 插入与该好友的聊天记录
                 cronyListItem.setChats(getChatVOS(userId,user.getId()));
                 cronyListItemList.add(cronyListItem);
             }
@@ -98,6 +109,7 @@ public class CommonServiceImpl implements CommonService {
     private List<ChatVO> getChatVOS(Long sid, Long rid) {
         User user = userMapper.selectById(sid);
         User ruser = userMapper.selectById(rid);
+        Crony crony = cronyMapper.selectByUserIdAndCronyId(sid, rid);
 
         List<Chat> chats = chatMapper.selectBySidAndRid(sid, rid);
         List<Chat> chats2 = chatMapper.selectBySidAndRid(rid, sid);
@@ -110,13 +122,14 @@ public class CommonServiceImpl implements CommonService {
             ChatVO chatVO = new ChatVO();
             BeanUtils.copyProperties(chat,chatVO);
             Long sendUid = chat.getSendUid();
+//            如果是自己
             if(sendUid.equals(sid)){
                 chatVO.setMe(true);
                 chatVO.setNickname(user.getNickname());
                 chatVO.setAvatar(user.getAvatar());
             }else {
                 chatVO.setMe(false);
-                chatVO.setNickname(ruser.getNickname());
+                chatVO.setNickname(crony.getDescription());
                 chatVO.setAvatar(ruser.getAvatar());
             }
             chatVOS.add(chatVO);

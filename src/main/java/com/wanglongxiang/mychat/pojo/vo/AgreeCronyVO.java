@@ -1,14 +1,14 @@
-package com.wanglongxiang.mychat.pojo.dto;
+package com.wanglongxiang.mychat.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CronyAddDTO {
-    private Long CronyAskId;
-    private Long CronyGroupId;
+@NoArgsConstructor
+public class AgreeCronyVO {
+    private Long cronyAskId;
+    private Long cronyGroupId;
     private String description;
 }

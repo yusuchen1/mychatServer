@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CronyAddDTO {
-    private Long CronyAskId;
-    private Long CronyGroupId;
-    private String description;
+@NoArgsConstructor
+public class GroupInfoDTO {
+    private String avatar;
+    private String number;
+    private String name;
 }

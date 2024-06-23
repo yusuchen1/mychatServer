@@ -8,6 +8,8 @@ import com.wanglongxiang.mychat.pojo.entity.Chat;
 import com.wanglongxiang.mychat.pojo.vo.ChatVO;
 import com.wanglongxiang.mychat.pojo.vo.LChatVO;
 import com.wanglongxiang.mychat.service.ChatService;
+import com.wanglongxiang.mychat.service.GroupService;
+import com.wanglongxiang.mychat.utils.ChatUtil;
 import com.wanglongxiang.mychat.webSocket.EchoChannel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +30,10 @@ public class ChatController {
     ChatService chatService;
     @Autowired
     EchoChannel echoChannel;
+    @Autowired
+    GroupService groupService;
+    @Autowired
+    ChatUtil chatUtil;
 
     @PostMapping("/save")
     @ApiOperation("消息插入接口")
@@ -39,17 +45,22 @@ public class ChatController {
         chat.setSendUid(userId);
         chatService.save(chat);
 
-//        给发送消息者推送新消息
-        List<ChatVO> chatVOS1 = chatService.selectChat(chat.getSendUid(), chat.getReceiveUid());
-        LChatVO lChatVO1 = new LChatVO(chat.getReceiveUid(),null, chatVOS1);
-        echoChannel.sendClientByUids(lChatVO1,userId);
+//        好友之间互发消息,webSocket给双方发送更新后的消息
+        if(chatDTO.getReceiveUid() != null){
+            Long uid1 = chat.getSendUid();
+            Long uid2 = chat.getReceiveUid();
+            chatUtil.CronyChatSend(uid1, uid2);
+        }
 
-//        给接受消息者推送新消息
-        List<ChatVO> chatVOS2 = chatService.selectChat(chat.getReceiveUid(), chat.getSendUid());
-        LChatVO lChatVO2 = new LChatVO(userId,null, chatVOS2);
-        echoChannel.sendClientByUids(lChatVO2,chat.getReceiveUid());
+//        群组发消息
+        else {
+            chatUtil.GroupChatSend(chatDTO.getGroupId());
+        }
         return  Result.success("发送成功!");
     }
+
+
+
 
     @GetMapping("/{rid}")
     @ApiOperation("查询聊天记录接口")
@@ -65,8 +76,6 @@ public class ChatController {
     public Result<List<ChatVO>> getGroupChat(@PathVariable Long gid){
         Long userId = BaseContext.getContext();
         log.info("正在查询聊天记录:uid:{},rid:{}",userId,gid);
-//        List<ChatVO> chatVOS = chatService.selectChat(userId, rid);
-//        return new Result<>("查询成功！",chatVOS, Code.SUCESS);
         return Result.success();
     }
 }

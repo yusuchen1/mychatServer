@@ -5,7 +5,7 @@
 <mapper namespace="com.wanglongxiang.mychat.mapper.CronyAskMapper">
 <!--    插入好友申请-->
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        insert into crony_ask (askid, askcronygroupid, objid)
-        values (#{askId},#{askCronyGroupId},#{objId});
+        insert into crony_ask (askid, askcronygroupid, objid,description)
+        values (#{askId},#{askCronyGroupId},#{objId},#{description});
     </insert>
 </mapper>

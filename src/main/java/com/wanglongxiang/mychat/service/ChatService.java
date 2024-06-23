@@ -8,5 +8,7 @@ import java.util.List;
 public interface ChatService {
     public void save(Chat c);
 
-    public List<ChatVO> selectChat(Long sid, Long rid);
+    List<ChatVO> selectChat(Long sid, Long rid);
+
+    List<ChatVO> selectGroupChat(Long uid,Long gid);
 }

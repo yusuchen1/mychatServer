@@ -4,17 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class SearchUserDTO {
-    private String key;
-    private Integer page;
-    private Integer size;
+public class PasswordDTO {
+    private String oldPassword;
+    private String newPassword;
 }
-
-
-
-
-
-
