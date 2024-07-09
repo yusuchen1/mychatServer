@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      server-addr: 192.168.85.139:8840
+      config:
+        file-extension: yaml
+        shared-configs:
+          - dataId: shared-okhttp.yaml
+          - dataId: shared-jdbc.yaml

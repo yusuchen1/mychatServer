@@ -1,0 +1,7 @@
+mychat:
+  db:
+    host: 192.168.85.139
+    port: 3307
+    database: mychat-user
+    pw: 123
+    un: root

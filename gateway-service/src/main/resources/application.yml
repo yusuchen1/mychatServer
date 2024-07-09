@@ -1,0 +1,58 @@
+server:
+  #端口号通常配成8080供前端访问
+  port: 8080
+spring:
+  application:
+    #服务名字，需要注册到注册中心
+    name: gateway
+  cloud:
+    nacos:
+      #注册中心地址
+      server-addr: 192.168.85.139:8840
+    gateway:
+      routes:
+        # 路由规则id，自定义，唯一
+        - id: user
+          # 路由的目标服务，lb是loadbalancer简写，代表负载均衡，后面跟服务名
+          uri: lb://user-service
+          predicates:
+            # 请求路径匹配，符合路径的将请求转发到上面uri配的服务中，可用逗号配置多个
+            - Path=/user/**
+        - id: group
+          uri: lb://group-service
+          predicates:
+            - Path=/group/**
+        - id: crony
+          uri: lb://crony-service
+          predicates:
+            - Path=/crony/**
+        - id: common
+          uri: lb://common-service
+          predicates:
+            - Path=/common/**
+        - id: chat
+          uri: lb://chat-service
+          predicates:
+            - Path=/chat/**
+        - id: websocket
+          uri: lb:ws://chat-service
+          predicates:
+            - Path=/ws/**
+          filters:
+            - StripPrefix=1
+mychat:
+  jwt:
+    #    设置jwt加密密钥
+    secret-key: xiaosu
+    #    设置过期时间
+    ttl: 7200000
+    #    前端传递过来的令牌名称
+    token-name: token
+  auth:
+    excludePaths:
+      - /user/login
+      - /user/register
+      - /ws/**
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

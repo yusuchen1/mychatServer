@@ -1,0 +1,18 @@
+logging:
+  level:
+    root: INFO
+mychat:
+  swagger:
+    title: "mychat项目群聊接口文档"
+    version: "1.0"
+    description: "mychat项目群聊接口文档"
+    package: "com.wanglongxiang.group.controller"
+#mybatis:
+#  configuration:
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+server:
+  port: 8089
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanglongxiang.crony.mapper.CronyMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into crony (userid, cronyid, description, crony_group_id)
+        values (#{userId},#{cronyId},#{description},#{cronyGroupId});
+    </insert>
+    <update id="updateCronyInfo">
+        update crony
+        <set>
+            <if test="description != null and description != ''">
+                description=#{description}
+            </if>
+
+            <if test="cronyGroupId != null">
+                , crony_group_id=#{cronyGroupId}
+            </if>
+        </set>
+        where userid=#{userId} and cronyid=#{cronyId};
+    </update>
+    <select id="selectByUserIdAndCronyIds" resultType="com.wanglongxiang.crony.pojo.entity.Crony">
+        select *
+        from crony
+        where userid=#{userId} and cronyid in
+        <foreach collection="cronyIds" open="(" close=")" separator="," item="cronyId">
+            #{cronyId}
+        </foreach> ;
+    </select>
+</mapper>
