@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CronyDesAndCGidVO {
+    private Long userId;
     private String description;
     private Long cronyGroupId;
 }

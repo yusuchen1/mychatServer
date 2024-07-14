@@ -184,4 +184,10 @@ public class CronyController {
         System.out.println("list = " + list);
         return list;
     }
+
+    @ApiOperation("获取指定用户的所有好友")
+    @GetMapping("/getCronyIds")
+    List<Long> getCronyIds(@RequestParam("userId") Long userId){
+        return cronyService.getCronyIds(userId);
+    }
 }

@@ -138,7 +138,7 @@ public class UserController {
 
     @ApiOperation("根据用户id集合获取searchUserVOS")
     @GetMapping("/getSearchUserVOSByUids")
-    public List<SearchUserVO> getSearchUserVOSByUids(List<Long> uids){
+    public List<SearchUserVO> getSearchUserVOSByUids(@RequestParam("uids") List<Long> uids){
         Long userId = BaseContext.getContext();
         return userService.getSearchUserVOSByUids(userId,uids);
     }

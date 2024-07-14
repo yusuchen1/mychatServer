@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -164,12 +165,25 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<List<ChatVO>> getChatVOSS(Long sid, List<Long> rids) {
         UserChatInfoVO user = userClient.getUserChatInfo(sid);
+
         List<UserChatInfoVO> ucis = userClient.getUserChatInfos(rids);
         List<CronyDesAndCGidVO> cronyDesAndCGidVOs = cronyClient.getCronyDesAndCGidVOs(sid, rids);
+
         List<List<ChatVO>> chatVOSs = new ArrayList<>();
-        for (int i = 0; i < ucis.size(); i++) {
-            List<Chat> chats = chatMapper.selectBySidAndRid(sid, rids.get(i));
-            List<Chat> chats2 = chatMapper.selectBySidAndRid(rids.get(i), sid);
+        for (int i = 0; i < rids.size(); i++) {
+            Long rid = rids.get(i);
+            String description = cronyDesAndCGidVOs.stream()
+                    .filter(cronyDesAndCGidVO -> cronyDesAndCGidVO.getUserId().equals(rid))
+                    .collect(Collectors.toList())
+                    .get(0).getDescription();
+
+            String avatar = ucis.stream()
+                    .filter(uci -> uci.getId().equals(rid))
+                    .collect(Collectors.toList())
+                    .get(0).getAvatar();
+
+            List<Chat> chats = chatMapper.selectBySidAndRid(sid, rid);
+            List<Chat> chats2 = chatMapper.selectBySidAndRid(rid, sid);
             chats.addAll(chats2);
             Collections.sort(chats,((o1, o2) -> {
                 return o1.getTime().compareTo(o2.getTime());
@@ -186,8 +200,8 @@ public class ChatServiceImpl implements ChatService {
                     chatVO.setAvatar(user.getAvatar());
                 }else {
                     chatVO.setMe(false);
-                    chatVO.setNickname(cronyDesAndCGidVOs.get(i).getDescription());
-                    chatVO.setAvatar(ucis.get(i).getAvatar());
+                    chatVO.setNickname(description);
+                    chatVO.setAvatar(avatar);
                 }
                 chatVOS.add(chatVO);
             }
@@ -196,5 +210,17 @@ public class ChatServiceImpl implements ChatService {
             System.out.println();
         }
         return chatVOSs;
+    }
+
+    @Override
+    public void deleteChat(Long chatId) {
+        Chat chat = chatMapper.selectById(chatId);
+        LocalDateTime chatTime = chat.getTime();
+        LocalDateTime now = LocalDateTime.now();
+        if(chatTime.plusMinutes(2).isAfter(now)){
+            chatMapper.deleteById(chatId);
+        }else {
+            throw new BaseException(MessageConstant.REVOKETIMEOUT);
+        }
     }
 }

@@ -63,8 +63,8 @@ public class GroupServiceImpl implements GroupService {
         if(group.getAvatar() == null ||group.getAvatar().equals("")){
             group.setAvatar(UserConstant.defaultAvatar);
         }
-//        User user = userMapper.selectById(userId);
-//        group.setMakeUsername(user.getUsername());
+        UserChatInfoVO uci = userClient.getUserChatInfo(userId);
+        group.setMakeUsername(uci.getUsername());
         group.setMakeUid(userId);
         group.setNum(1);
         Group g = groupMapper.findByNumber(groupInfoDTO.getNumber());

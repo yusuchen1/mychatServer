@@ -111,7 +111,7 @@ public class GroupController {
 
     @ApiOperation("根据群聊id获取到群聊中所有用户的id")
     @GetMapping("/getUidsByGid")
-    public List<Long> getUidsByGid(@PathParam("gid") Long gid){
+    public List<Long> getUidsByGid(@RequestParam("gid") Long gid){
         log.info("根据群聊id获取群聊所有成员");
         return groupService.getUidsByGid(gid);
     }

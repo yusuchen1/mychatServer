@@ -11,7 +11,7 @@ import java.util.List;
 @FeignClient("group-service")
 public interface GroupClient {
     @GetMapping("/group/getUidsByGid")
-    List<Long> getUidsByGid(@PathParam("gid") Long gid);
+    List<Long> getUidsByGid(@RequestParam("gid") Long gid);
 
     @GetMapping("/group/userIsInGroup")
     public boolean userIsInGroup(@RequestParam("userId")Long userId, @RequestParam("gid")Long gid);
@@ -20,7 +20,7 @@ public interface GroupClient {
     public boolean groupIsExists(@RequestParam("gid")Long gid);
 
     @GetMapping("/group/getGidsByUid")
-    public List<Long> getGidsByUid(Long uid);
+    public List<Long> getGidsByUid(@RequestParam("uid") Long uid);
 
     @GetMapping("/group/getGroupListItemsByUid")
     public List<GroupListItem> getGroupListItemsByUid(@RequestParam("uid") Long uid);

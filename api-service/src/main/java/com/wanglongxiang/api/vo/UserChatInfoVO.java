@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class UserChatInfoVO {
     private Long id;
     private String nickname;
+    private String username;
     private String avatar;
     private String signature;
 }

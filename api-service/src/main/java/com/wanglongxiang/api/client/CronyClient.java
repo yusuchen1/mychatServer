@@ -31,4 +31,7 @@ public interface CronyClient {
 
     @GetMapping("/crony/getCronyDesAndCGidVOs")
     List<CronyDesAndCGidVO> getCronyDesAndCGidVOs(@RequestParam("userId") Long userId,@RequestParam("cronyIds") List<Long> cronyIds);
+
+    @GetMapping("/crony/getCronyIds")
+    List<Long> getCronyIds(@RequestParam("userId") Long userId);
 }

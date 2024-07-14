@@ -9,6 +9,7 @@ import com.wanglongxiang.chat.utils.ChatUtil;
 import com.wanglongxiang.chat.webSocket.EchoChannel;
 import com.wanglongxiang.mychat.common.Code;
 import com.wanglongxiang.mychat.common.Result;
+import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.context.BaseContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -139,5 +140,14 @@ public class ChatController {
     public List<List<ChatVO>> getChatVOSS(@RequestParam("sid") Long sid,@RequestParam("rids") List<Long> rids){
         log.info("左侧列表:rids={}",rids);
         return chatService.getChatVOSS(sid,rids);
+    }
+
+    @ApiOperation("撤回消息")
+    @DeleteMapping("/delChat")
+    public Result delChat(@RequestParam("chatId") Long chatId){
+        Long userId = BaseContext.getContext();
+        log.info("正在撤回消息,userId:{},chatId:{}",userId,chatId);
+        chatService.deleteChat(chatId);
+        return Result.success(MessageConstant.REVOKESUCCESS);
     }
 }

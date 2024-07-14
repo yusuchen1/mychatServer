@@ -1,11 +1,12 @@
 spring:
   profiles:
-    active: local
+    active: dev
   application:
     name: chat-service
   cloud:
     nacos:
-      server-addr: 192.168.85.139:8840
+#      server-addr: 192.168.85.139:8840
+      server-addr: nacos:8848
       config:
         file-extension: yaml
         shared-configs:

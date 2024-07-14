@@ -26,4 +26,9 @@ public class MessageConstant {
     public static final String GROUPUNINCLUDE = "您已不在群聊中,发送失败!";
     public static final String GROUPDONTEXIT = "群主不允许退出群聊!";
     public static final String GROUPUNEXIST = "该群聊已被解散";
+    public static final String MomentUNEXIST = "朋友圈已被删除";
+    public static final String DONTDELETEOTHERCOM = "你不能删除他人的评论";
+    public static final String SAVESUCCESS = "保存成功!";
+    public static final String REVOKESUCCESS = "撤回成功!";
+    public static final String REVOKETIMEOUT = "消息发送已经超过两分钟，撤回失败";
 }

@@ -14,7 +14,7 @@ public interface UserClient {
     UserChatInfoVO getUserChatInfo(@RequestParam("uid") Long uid);
 
     @GetMapping("/user/getSearchUserVOSByUids")
-    List<SearchUserVO> getSearchUserVOSByUids(List<Long> uids);
+    List<SearchUserVO> getSearchUserVOSByUids(@RequestParam("uids") List<Long> uids);
 
     @GetMapping("/user/getUserChatInfos")
     List<UserChatInfoVO> getUserChatInfos(@RequestParam("uids") List<Long> uids);

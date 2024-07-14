@@ -129,7 +129,7 @@ public class CronyServiceImpl implements CronyService {
         if(crony == null){
             return null;
         }
-        return new CronyDesAndCGidVO(crony.getDescription(),crony.getCronyGroupId());
+        return new CronyDesAndCGidVO(cronyId,crony.getDescription(),crony.getCronyGroupId());
     }
 
     @Override
@@ -142,8 +142,15 @@ public class CronyServiceImpl implements CronyService {
             return new ArrayList<>();
         }
         return cronies.stream()
-                .map(crony -> new CronyDesAndCGidVO(crony.getDescription(),crony.getCronyGroupId()))
+                .map(crony -> new CronyDesAndCGidVO(crony.getCronyId(),crony.getDescription(),crony.getCronyGroupId()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> getCronyIds(Long userId) {
+        List<Long> cronyIds = cronyMapper.getCronyIds(userId);
+        cronyIds = cronyIds.stream().filter(id -> isCrony(userId,id)).collect(Collectors.toList());
+        return cronyIds;
     }
 
 

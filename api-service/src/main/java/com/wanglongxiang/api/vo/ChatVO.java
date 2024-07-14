@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatVO{
-    private Long id;
+    private String id;
     private String avatar;
     private String nickname;
     private Long sendUid;
@@ -21,4 +21,8 @@ public class ChatVO{
     private LocalDateTime time;
     private String content;
     private boolean isMe;
+
+    public void setId(Long id) {
+        this.id = id.toString();
+    }
 }

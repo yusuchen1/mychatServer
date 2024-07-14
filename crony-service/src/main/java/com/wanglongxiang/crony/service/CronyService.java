@@ -30,4 +30,6 @@ public interface CronyService {
     CronyDesAndCGidVO getCronyDesAndCGidVO(Long userId, Long cronyId);
 
     List<CronyDesAndCGidVO> getCronyDesAndCGidVOs(Long userId, List<Long> cronyIds);
+
+    List<Long> getCronyIds(Long userId);
 }
