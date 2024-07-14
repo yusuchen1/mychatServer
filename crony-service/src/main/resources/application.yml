@@ -16,5 +16,5 @@ mybatis-plus:
     db-config:
       id-type: auto
 server:
-  port: 8085
+  port: 8084
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

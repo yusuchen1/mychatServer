@@ -1,0 +1,25 @@
+logging:
+  level:
+    root: INFO
+mychat:
+  jwt:
+#    设置jwt加密密钥
+    secret-key: xiaosu
+#    设置过期时间
+    ttl: 7200000
+#    前端传递过来的令牌名称
+    token-name: token
+  swagger:
+    title: "mychat项目朋友圈接口文档"
+    version: "1.0"
+    description: "mychat朋友圈接口文档"
+    package: "com.wanglongxiang.moment.controller"
+#mybatis:
+#  configuration:
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+server:
+  port: 8082
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

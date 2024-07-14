@@ -1,0 +1,7 @@
+mychat:
+  db:
+    host: mysql
+    port: 3306
+    database: mychat-moments
+    pw: 123
+    un: root

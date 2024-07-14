@@ -43,11 +43,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!--        解析jwt需要的包-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
 
         <!--        swagger-->
         <dependency>
@@ -55,11 +50,6 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
         </dependency>
 
-        <!--        webSocket-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
 
         <!--        fasejson2-->
         <dependency>

@@ -2,4 +2,6 @@ mychat:
   db:
     host: mysql
     port: 3306
-    database: mychat
+    database: mychat-user
+    pw: 123
+    un: root

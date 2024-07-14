@@ -1,6 +1,7 @@
 package com.wanglongxiang.user.service.impl;
 
 import com.wanglongxiang.api.client.CronyClient;
+import com.wanglongxiang.api.client.MomentClient;
 import com.wanglongxiang.api.dto.LoginUserDTO;
 import com.wanglongxiang.api.dto.PasswordDTO;
 import com.wanglongxiang.api.dto.RegisterUserDTO;
@@ -22,10 +23,12 @@ import com.wanglongxiang.user.utils.AliossUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     CronyClient cronyClient;
+
+    @Autowired
+    MomentClient momentClient;
 
     @Autowired
     AliossUtil aliossUtil;
@@ -159,9 +165,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
         user.setPassword(null);
+        User u = userMapper.selectById(user.getId());
         userMapper.updateById(user);
+        if(!u.getNickname().equals(user.getNickname())){
+            HashMap<Long,String> map = new HashMap<>();
+            map.put(user.getId(),user.getNickname());
+            momentClient.updateNickname(map);
+        }
     }
 
     @Override

@@ -43,11 +43,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!--        解析jwt需要的包-->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
 
         <!--        swagger-->
         <dependency>
@@ -65,11 +60,6 @@
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2-extension-spring5</artifactId>
-        </dependency>
-        <!--            oss-->
-        <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
         </dependency>
         <!--        common-->
         <dependency>
@@ -111,7 +101,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.wanglongxiang.user.UserApplication</mainClass>
+                    <mainClass>com.wanglongxiang.chat.ChatApplication</mainClass>
                     <skip>false</skip>
                 </configuration>
                 <executions>

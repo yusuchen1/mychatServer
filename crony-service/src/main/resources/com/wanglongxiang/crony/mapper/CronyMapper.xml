@@ -29,4 +29,7 @@
             #{cronyId}
         </foreach> ;
     </select>
+    <select id="getCronyIds" resultType="java.lang.Long">
+        select cronyid from crony where userid = #{userId}
+    </select>
 </mapper>

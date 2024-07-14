@@ -1,0 +1,146 @@
+version: "3.8"
+
+services:
+  #部署mysql
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - "./mysql/conf:/etc/mysql/conf.d"
+      - "./mysql/data:/var/lib/mysql"
+      - "./mysql/init:/docker-entrypoint-initdb.d"
+    networks:
+      - mychat-net
+  # 部署 Nacos
+  nacos:
+    image: nacos/nacos-server:v2.1.0-slim
+    container_name: nacos
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    env_file:
+      - ./nacos/custom.env
+    restart: always
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+  #user-service
+  user-service:
+    build:
+      context: .
+      dockerfile: user-Dockerfile
+    container_name: user-service
+    ports:
+      - "8088:8088"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #chat-service
+  chat-service:
+    build:
+      context: .
+      dockerfile: chat-Dockerfile
+    container_name: chat-service
+    ports:
+      - "8086:8086"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #common-service
+  common-service:
+    build:
+      context: .
+      dockerfile: common-Dockerfile
+    container_name: common-service
+    ports:
+      - "8087:8087"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #crony-service
+  crony-service:
+    build:
+      context: .
+      dockerfile: crony-Dockerfile
+    container_name: crony-service
+    ports:
+      - "8084:8084"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #gateway-service
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-Dockerfile
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #group-service
+  group-service:
+    build:
+      context: .
+      dockerfile: group-Dockerfile
+    container_name: group-service
+    ports:
+      - "8092:8092"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #moment-service
+  moment-service:
+    build:
+      context: .
+      dockerfile: moment-Dockerfile
+    container_name: moment-service
+    ports:
+      - "8082:8082"
+    networks:
+      - mychat-net
+    depends_on:
+      - mysql
+      - nacos
+  #部署nginx服务器，18080端口映射到18080端口为用户端，18081映射到18081端口为后台端
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./nginx/html:/usr/share/nginx/html"
+    depends_on:
+      - chat-service
+      - common-service
+      - crony-service
+      - gateway-service
+      - group-service
+      - moment-service
+      - user-service
+    networks:
+      - mychat-net
+networks:
+  mychat-net:
+    name: mc
