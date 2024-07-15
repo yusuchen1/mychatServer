@@ -28,4 +28,8 @@ public interface GroupService {
     List<GroupMVO> getGroupMByUid(Long userId);
 
     void exitGroup(Long userId, Long groupId);
+
+    void updateGroup(Group group);
+
+    void dissGroup(Long userId,Long gid);
 }

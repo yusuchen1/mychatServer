@@ -2,6 +2,7 @@ package com.wanglongxiang.mychat.controller;
 
 import com.wanglongxiang.mychat.common.Code;
 import com.wanglongxiang.mychat.common.Result;
+import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.context.BaseContext;
 import com.wanglongxiang.mychat.pojo.dto.ChatDTO;
 import com.wanglongxiang.mychat.pojo.entity.Chat;
@@ -77,5 +78,14 @@ public class ChatController {
         Long userId = BaseContext.getContext();
         log.info("正在查询聊天记录:uid:{},rid:{}",userId,gid);
         return Result.success();
+    }
+
+    @ApiOperation("撤回消息")
+    @DeleteMapping("/delChat")
+    public Result delChat(@RequestParam("chatId") Long chatId){
+        Long userId = BaseContext.getContext();
+        log.info("正在撤回消息,userId:{},chatId:{}",userId,chatId);
+        chatService.deleteChat(chatId);
+        return Result.success(MessageConstant.REVOKESUCCESS);
     }
 }

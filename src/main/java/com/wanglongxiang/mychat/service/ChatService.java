@@ -11,4 +11,6 @@ public interface ChatService {
     List<ChatVO> selectChat(Long sid, Long rid);
 
     List<ChatVO> selectGroupChat(Long uid,Long gid);
+
+    void deleteChat(Long chatId);
 }

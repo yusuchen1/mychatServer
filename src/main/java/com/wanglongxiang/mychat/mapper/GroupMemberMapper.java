@@ -24,4 +24,7 @@ public interface GroupMemberMapper extends BaseMapper<GroupMember> {
 
     @Delete("delete from group_member where memberid = #{uid} and groupid = #{gid}")
     void deleteByUidAndGid(@Param("uid") Long uid,@Param("gid") Long gid);
+
+    @Delete("delete from group_member where groupid = #{gid};")
+    void deleteByGid(Long gid);
 }

@@ -1,6 +1,8 @@
 package com.wanglongxiang.mychat.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,14 +14,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MomentsDetails {
+    @TableId(type= IdType.AUTO)
     private Long id;
-
-    @TableField(value = "userid")
     private Long userId;
-    @TableField(value = "islike")
-    private boolean isLike;
+    @TableField("`like`")
+    private boolean like;
     private Long replay;
-    private String context;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String content;
+    @DateTimeFormat(pattern = "YYYY-MM-DD HH-mm-ss")
     private LocalDateTime time;
+    private Long momentsId;
+    private String nickname;
+    private String replayNickname;
+
+    public boolean getLike() {
+        return like;
+    }
 }

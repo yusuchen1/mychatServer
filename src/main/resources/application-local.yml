@@ -1,0 +1,7 @@
+mychat:
+  jdbc:
+    un: root
+    pw: 1687502191Wlx
+    localhost: localhost
+    port: 3306
+    database: mychat

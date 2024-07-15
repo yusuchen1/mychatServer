@@ -21,6 +21,7 @@ import com.wanglongxiang.mychat.pojo.entity.User;
 import com.wanglongxiang.mychat.pojo.vo.CronyGroupVO;
 import com.wanglongxiang.mychat.pojo.vo.SearchUserVO;
 import com.wanglongxiang.mychat.pojo.vo.UserInfoVO;
+import com.wanglongxiang.mychat.service.MomentService;
 import com.wanglongxiang.mychat.service.UserService;
 import com.wanglongxiang.mychat.utils.AliossUtil;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +49,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     AliossUtil aliossUtil;
+
+    @Autowired
+    MomentService momentService;
 
     @Override
     public User login(LoginUserDTO loginUserDTO) {
@@ -170,7 +175,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         user.setPassword(null);
+        User u = userMapper.selectById(user.getId());
         userMapper.updateById(user);
+        if(!u.getNickname().equals(user.getNickname())){
+            HashMap<Long,String> map = new HashMap<>();
+            map.put(user.getId(),user.getNickname());
+            momentService.updateNickname(map);
+        }
     }
 
     @Override

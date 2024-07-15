@@ -6,7 +6,7 @@
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id">
         insert into `group` (avatar, number, name, num, makeuid,makeusername)
-        values (#{avatar},#{number},#{name},#{num},#{makeUid},#{makeUserName});
+        values (#{avatar},#{number},#{name},#{num},#{makeUid},#{makeUsername});
     </insert>
     <select id="getByIds" resultType="com.wanglongxiang.mychat.pojo.entity.Group">
         select *

@@ -92,4 +92,23 @@ public class GroupController {
         chatUtil.GroupChatSend(gid);
         return Result.success(MessageConstant.OPERATESUCCESS);
     }
+
+    @PutMapping("/updateGroup")
+    @ApiOperation("更新群聊")
+    public Result updateGroup(@RequestBody Group group){
+        Long userId = BaseContext.getContext();
+        log.info("userId:{}正在更新群组:{}",userId,group);
+        groupService.updateGroup(group);
+        return Result.success(MessageConstant.UPDATESUCCESS);
+    }
+
+    @DeleteMapping("/dissGroup")
+    @ApiOperation("解散群聊")
+    public Result dissGroup(@PathParam("gid") Long gid){
+        Long userId = BaseContext.getContext();
+        log.info("userId:{}正在解散群聊,gid:{}",userId,gid);
+        groupService.dissGroup(userId,gid);
+        return Result.success(MessageConstant.OPERATESUCCESS);
+    }
+
 }

@@ -27,4 +27,6 @@ public interface CronyMapper extends BaseMapper<Crony> {
     @Delete("delete from crony where userid = #{userId} and cronyid = #{cronyId};")
     void deleteByUidAndCid(@Param("userId") Long userId,@Param("cronyId") Long cronyId);
 
+    @Select("select cronyid from crony where userid = #{userId}")
+    List<Long> getCronyIds(@Param("userId") Long userId);
 }

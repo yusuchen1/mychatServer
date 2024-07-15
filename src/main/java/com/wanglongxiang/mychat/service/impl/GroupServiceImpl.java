@@ -27,8 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.MacSpi;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -127,6 +129,9 @@ public class GroupServiceImpl implements GroupService {
 
 
         List<Chat> chats = chatMapper.selectByGid(gid);
+//        if(chats == null){
+//            chats = new ArrayList<>();
+//        }
         List<ChatVO> chatVOS = chats.stream().map(chat -> {
             ChatVO chatVO = new ChatVO();
             BeanUtils.copyProperties(chat, chatVO);
@@ -149,7 +154,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getByGid(Long gid) {
-        return groupMapper.getById(gid);
+        Group group = groupMapper.getById(gid);
+        if(group == null){
+            throw new BaseException(MessageConstant.GROUPUNEXIST);
+        }
+        return group;
     }
 
     @Override
@@ -169,15 +178,40 @@ public class GroupServiceImpl implements GroupService {
     public void exitGroup(Long userId, Long groupId) {
         Group group = groupMapper.getById(groupId);
 //        如果是群主要退出群聊，不允许
+        if(group == null){
+            groupMemberMapper.deleteByUidAndGid(userId,groupId);
+            return;
+        }
+
         if(group.getMakeUid().equals(userId)){
             throw new BaseException(MessageConstant.GROUPDONTEXIT);
         }
         groupMemberMapper.deleteByUidAndGid(userId,groupId);
+
 //        退出群聊成功，机器人播报
         roboteMessage(userId,groupId,GroupConstant.EXITGROUPO);
 //        群聊人数减一
         groupMapper.updateNum(groupId,group.getNum()-1);
     }
+
+    @Override
+    public void updateGroup(Group group) {
+        Group g1 = groupMapper.findByNumber(group.getNumber());
+        if(g1 != null && !g1.getId().equals(group.getId())){
+            throw new GroupExistException(MessageConstant.GROUPEXIST);
+        }
+        groupMapper.updateById(group);
+    }
+
+    @Override
+    @Transactional
+    public void dissGroup(Long userId,Long gid) {
+        groupMapper.deleteById(gid);
+        groupMemberMapper.deleteByGid(gid);
+        chatMapper.deleteByGid(gid);
+        groupMemberMapper.deleteByUidAndGid(userId,gid);
+    }
+
     // 机器人播报
     private void roboteMessage(Long userId, Long gid, String message) {
         User p = userMapper.selectById(userId);

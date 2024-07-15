@@ -2,22 +2,18 @@ package com.wanglongxiang.mychat.service.impl;
 
 import com.wanglongxiang.mychat.common.constant.GroupConstant;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
+import com.wanglongxiang.mychat.exception.BaseException;
 import com.wanglongxiang.mychat.exception.cronyException.ItsNotCronyException;
 import com.wanglongxiang.mychat.exception.groupException.GroupUnIncludeException;
-import com.wanglongxiang.mychat.mapper.ChatMapper;
-import com.wanglongxiang.mychat.mapper.CronyMapper;
-import com.wanglongxiang.mychat.mapper.GroupMemberMapper;
-import com.wanglongxiang.mychat.mapper.UserMapper;
-import com.wanglongxiang.mychat.pojo.entity.Chat;
-import com.wanglongxiang.mychat.pojo.entity.Crony;
-import com.wanglongxiang.mychat.pojo.entity.GroupMember;
-import com.wanglongxiang.mychat.pojo.entity.User;
+import com.wanglongxiang.mychat.mapper.*;
+import com.wanglongxiang.mychat.pojo.entity.*;
 import com.wanglongxiang.mychat.pojo.vo.ChatVO;
 import com.wanglongxiang.mychat.service.ChatService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +31,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Autowired
     GroupMemberMapper groupMemberMapper;
+
+    @Autowired
+    GroupMapper groupMapper;
 
     @Override
     public void save(Chat c) {
@@ -55,6 +54,10 @@ public class ChatServiceImpl implements ChatService {
             }
 //            如果是群聊发消息，判断用户是否在群聊中，不在群聊中抛出异常
             else {
+                Group group = groupMapper.getById(groupId);
+                if(group == null){
+                    throw new BaseException(MessageConstant.GROUPUNEXIST);
+                }
                 GroupMember groupMember = groupMemberMapper.getByGidAndUid(groupId, sendUid);
                 if(groupMember == null){
                     throw new GroupUnIncludeException(MessageConstant.GROUPUNINCLUDE);
@@ -86,6 +89,18 @@ public class ChatServiceImpl implements ChatService {
             chatVOS.add(chatVO);
         }
         return chatVOS;
+    }
+
+    @Override
+    public void deleteChat(Long chatId) {
+        Chat chat = chatMapper.selectById(chatId);
+        LocalDateTime chatTime = chat.getTime();
+        LocalDateTime now = LocalDateTime.now();
+        if(chatTime.plusMinutes(2).isAfter(now)){
+            chatMapper.deleteById(chatId);
+        }else {
+            throw new BaseException(MessageConstant.REVOKETIMEOUT);
+        }
     }
 
     private List<ChatVO> getChatVOS(Long sid, Long rid) {
