@@ -147,6 +147,7 @@ public class CronyGroupServiceImpl implements CronyGroupService {
     }
 
     @Override
+    @Transactional
     public void save(Long userId,String cronyGroupName) {
         CronyGroup c = cronyGroupMapper.findByUidAndGroupName(userId, cronyGroupName);
         if(c != null){

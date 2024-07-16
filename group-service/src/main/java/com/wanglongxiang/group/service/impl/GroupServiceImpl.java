@@ -20,6 +20,7 @@ import com.wanglongxiang.mychat.common.constant.GroupConstant;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.common.constant.UserConstant;
 import com.wanglongxiang.mychat.exception.BaseException;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -115,23 +116,20 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @Transactional
+    @GlobalTransactional
     public GroupListItem joinGroup(Long userId, Long gid){
         GroupMember groupMember = new GroupMember();
         groupMember.setGroupId(gid);
         groupMember.setMemberId(userId);
         groupMemberMapper.save(groupMember);
         roboteMessage(userId, gid, GroupConstant.JOINMESSAGE);
-
         List<ChatVO> chatVOS = chatClient.getChatVOSByGid(gid);
         Group group = groupMapper.getById(gid);
         GroupListItem groupListItem = new GroupListItem();
         BeanUtils.copyProperties(group,groupListItem);
         groupListItem.setChats(chatVOS);
-
 //        群人数加一
         groupMapper.updateNum(gid,group.getNum()+1);
-
         return groupListItem;
     }
 
@@ -157,7 +155,7 @@ public class GroupServiceImpl implements GroupService {
     * 群主不允许退出群聊
     * */
     @Override
-    @Transactional
+    @GlobalTransactional
     public void exitGroup(Long userId, Long groupId) {
         Group group = groupMapper.getById(groupId);
 //        如果是群主要退出群聊，不允许
@@ -178,6 +176,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional
     public void updateGroup(Group group) {
         Group g1 = groupMapper.findByNumber(group.getNumber());
         if(g1 != null && !g1.getId().equals(group.getId())){
@@ -187,7 +186,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @Transactional
+    @GlobalTransactional
     public void dissGroup(Long userId,Long gid) {
         groupMapper.deleteById(gid);
         groupMemberMapper.deleteByGid(gid);

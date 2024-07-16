@@ -16,6 +16,7 @@ import com.wanglongxiang.mychat.exception.BaseException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
+    @Transactional
     public void save(Chat c) {
 //        如果不是机器人发消息，则需要判断
         if(!c.getSendUid().equals(GroupConstant.ROBOTID)){
@@ -69,7 +71,6 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatVO> selectChat(Long sid, Long rid) {
-
         List<ChatVO> chatVOS = getChatVOS(sid, rid);
         return chatVOS;
     }
@@ -106,6 +107,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Transactional
     public void delGroupChatByGid(Long gid) {
         chatMapper.deleteByGid(gid);
     }
@@ -213,6 +215,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Transactional
     public void deleteChat(Long chatId) {
         Chat chat = chatMapper.selectById(chatId);
         LocalDateTime chatTime = chat.getTime();

@@ -11,6 +11,7 @@ import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class CronyAskServiceImpl implements CronyAskService {
     UserClient userClient;
 
     @Override
+    @Transactional
     public void save(CronyAsk cronyAsk) {
         CronyAsk c = cronyAskMapper.findByAskIdAndObjId(cronyAsk.getAskId(), cronyAsk.getObjId());
 //        如果表中已有请求，抛出异常

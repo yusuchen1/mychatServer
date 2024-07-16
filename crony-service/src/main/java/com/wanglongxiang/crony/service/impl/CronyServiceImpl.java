@@ -16,6 +16,7 @@ import com.wanglongxiang.crony.pojo.entity.CronyAsk;
 import com.wanglongxiang.crony.pojo.entity.CronyGroup;
 import com.wanglongxiang.crony.service.CronyService;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class CronyServiceImpl implements CronyService {
     ChatClient chatClient;
 
     @Override
-    @Transactional
+    @GlobalTransactional
     public CronyGroupList agreeCrony(AgreeCronyVO agreeCronyVO) {
         Long cronyAskId = agreeCronyVO.getCronyAskId();
         Long cronyGroupId = agreeCronyVO.getCronyGroupId();
@@ -75,6 +76,7 @@ public class CronyServiceImpl implements CronyService {
     }
 
     @Override
+    @Transactional
     public void updateCronyInfo(Long userId, UpdateCronyInfoDTO updateCronyInfoDTO) {
         cronyMapper.updateCronyInfo(userId,
                 updateCronyInfoDTO.getCronyId(),
@@ -83,6 +85,7 @@ public class CronyServiceImpl implements CronyService {
     }
 
     @Override
+    @Transactional
     public void dropCrony(Long userId, Long cronyId) {
         Crony crony = cronyMapper.selectByUserIdAndCronyId(userId, cronyId);
         if(crony == null){
@@ -99,6 +102,7 @@ public class CronyServiceImpl implements CronyService {
     }
 
     @Override
+    @Transactional
     public void refuseCronyAsk(Long cronyAskId) {
         cronyAskMapper.deleteById(cronyAskId);
     }

@@ -13,6 +13,7 @@ import com.wanglongxiang.moment.pojo.entity.MomentsDetails;
 import com.wanglongxiang.moment.service.MomentService;
 import com.wanglongxiang.mychat.common.constant.MessageConstant;
 import com.wanglongxiang.mychat.exception.BaseException;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class MomentServiceImpl implements MomentService {
     CronyClient cronyClient;
 
     @Override
+    @Transactional
     public void saveMoments(Moments moments) {
         UserChatInfoVO uci = userClient.getUserChatInfo(moments.getUserId());
         BeanUtils.copyProperties(uci,moments);
@@ -42,6 +44,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
+    @Transactional
     public void editMoments(EditMomentDTO addMomentDTO) {
         momentMapper.updateContent(addMomentDTO.getId(),addMomentDTO.getContent());
     }
@@ -59,6 +62,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
+    @GlobalTransactional
     public List<MomentsVO> getMomentsVOS(Long userId) {
         List<Long> cronyIds = cronyClient.getCronyIds(userId);
         cronyIds.add(userId);
@@ -100,6 +104,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
+    @GlobalTransactional
     public String reverseLike(Long momentId, Long userId) {
         List<MomentsDetails> momentsDetails = momentDetailsMapper.selectByMomentId(momentId);
         List<MomentsDetails> collect = momentsDetails.stream()
@@ -126,6 +131,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
+    @Transactional
     public CommontNicknameVO saveCommont(Long userId, MomentCommontDTO momentCommontDTO) {
         ArrayList<Long> uids = new ArrayList<>();
         Collections.addAll(uids,userId,momentCommontDTO.getReplay());
@@ -151,6 +157,7 @@ public class MomentServiceImpl implements MomentService {
     }
 
     @Override
+    @Transactional
     public void deleteCommont(Long userId, Long momentsDetailsId) {
         MomentsDetails momentsDetails = momentDetailsMapper.selectById(momentsDetailsId);
         if(!momentsDetails.getUserId().equals(userId)){
