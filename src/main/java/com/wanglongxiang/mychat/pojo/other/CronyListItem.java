@@ -15,4 +15,5 @@ public class CronyListItem {
     private String avatar;
     private String name;
     private List<ChatVO> chats;
+    private Boolean online;
 }

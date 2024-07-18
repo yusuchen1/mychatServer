@@ -19,4 +19,6 @@ public interface CronyService {
     List<SearchUserVO> getUserByGid(Long userId,Long gid,String key);
 
     void refuseCronyAsk(Long cronyAskId);
+
+    List<Long> getCronyIds(Long uid);
 }

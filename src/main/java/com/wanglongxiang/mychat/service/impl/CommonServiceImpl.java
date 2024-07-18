@@ -1,5 +1,6 @@
 package com.wanglongxiang.mychat.service.impl;
 
+import com.wanglongxiang.mychat.common.constant.RedisConstant;
 import com.wanglongxiang.mychat.mapper.*;
 import com.wanglongxiang.mychat.pojo.entity.*;
 import com.wanglongxiang.mychat.pojo.other.CronyGroupList;
@@ -9,14 +10,22 @@ import com.wanglongxiang.mychat.pojo.vo.ChatVO;
 import com.wanglongxiang.mychat.service.ChatService;
 import com.wanglongxiang.mychat.service.CommonService;
 import com.wanglongxiang.mychat.service.UserService;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+@Slf4j
 @Service
 public class CommonServiceImpl implements CommonService {
 
@@ -37,6 +46,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Autowired
     ChatMapper chatMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
 
 
@@ -100,6 +112,15 @@ public class CommonServiceImpl implements CommonService {
             cronyGroupLists.setCronys(cronyListItemList);
             cronyGroupListss.add(cronyGroupLists);
         }
+        SetOperations setOperations = redisTemplate.opsForSet();
+        Set<Long> members = setOperations.members(RedisConstant.ONLINE);
+        if(members != null){
+            cronyGroupListss.stream().forEach(item -> {
+                item.getCronys().stream().forEach(crony -> {
+                    crony.setOnline(members.contains(crony.getId()));
+                });
+            });
+        }
         return cronyGroupListss;
     }
 
@@ -137,5 +158,19 @@ public class CommonServiceImpl implements CommonService {
 
         System.out.println();
         return chatVOS;
+    }
+
+    @Override
+    public void onLine(Long userId){
+        log.info("用户上线,userId:{}",userId);
+        SetOperations setOperations = redisTemplate.opsForSet();
+        setOperations.add(RedisConstant.ONLINE,userId);
+    }
+
+    @Override
+    public void offLine(Long userId){
+        log.info("用户下线,userId:{}",userId);
+        SetOperations setOperations = redisTemplate.opsForSet();
+        setOperations.remove(RedisConstant.ONLINE,userId);
     }
 }

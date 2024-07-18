@@ -9,4 +9,8 @@ public interface CommonService {
     public List<GroupListItem> getGroupListItemByUid(Long userId);
 
     public List<CronyGroupList> getCronyGroupListByUid(Long userId);
+
+    void onLine(Long userId);
+
+    void offLine(Long userId);
 }

@@ -118,5 +118,16 @@ public class CronyServiceImpl implements CronyService {
         cronyAskMapper.deleteById(cronyAskId);
     }
 
+    @Override
+    public List<Long> getCronyIds(Long userId) {
+        List<Long> cronyIds = cronyMapper.getCronyIds(userId);
+        cronyIds = cronyIds.stream().filter(id -> isCrony(userId,id)).collect(Collectors.toList());
+        return cronyIds;
+    }
 
+    private boolean isCrony(Long userId1, Long userId2) {
+        Crony crony1 = cronyMapper.selectByUserIdAndCronyId(userId1, userId2);
+        Crony crony2 = cronyMapper.selectByUserIdAndCronyId(userId2, userId1);
+        return !(crony1 == null || crony2 == null);
+    }
 }
