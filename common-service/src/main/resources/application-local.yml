@@ -1,0 +1,6 @@
+mychat:
+  redis:
+    database: 0
+    host: 192.168.85.139
+    port: 6379
+    password: 123

@@ -3,6 +3,11 @@ spring:
     active: local
   application:
     name: common-service
+  redis:
+    port: ${mychat.redis.port}
+    host: ${mychat.redis.host}
+    database: ${mychat.redis.database}
+    password: ${mychat.redis.password}
   cloud:
     nacos:
       server-addr: 192.168.85.139:8840

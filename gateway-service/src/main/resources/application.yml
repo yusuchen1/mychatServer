@@ -39,8 +39,6 @@ spring:
           uri: lb:ws://chat-service
           predicates:
             - Path=/ws/**
-          filters:
-            - StripPrefix=1
         - id: moment
           uri: lb://moment-service
           predicates:
