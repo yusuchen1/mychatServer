@@ -5,3 +5,8 @@ mychat:
     database: mychat-user
     pw: 123
     un: root
+  redis:
+    database: 0
+    host: redis
+    port: 6379
+    password: 123

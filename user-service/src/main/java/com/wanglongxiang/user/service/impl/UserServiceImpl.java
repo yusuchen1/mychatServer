@@ -22,6 +22,8 @@ import com.wanglongxiang.user.service.UserService;
 import com.wanglongxiang.user.utils.AliossUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -143,6 +145,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(cacheNames = "avatar",key = "#userId")
     public String getAvatar(Long userId) {
         User user = userMapper.selectById(userId);
         return user.getAvatar();
@@ -158,6 +161,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(cacheNames = "userInfo",key = "#userId")
     public User getUserInfo(Long userId) {
         User user = userMapper.selectById(userId);
         user.setPassword(UserConstant.SHOWPASSWORD);
@@ -166,6 +170,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = {"avatar","userInfo"},key = "#user.id")
     public void updateUser(User user) {
         user.setPassword(null);
         User u = userMapper.selectById(user.getId());
