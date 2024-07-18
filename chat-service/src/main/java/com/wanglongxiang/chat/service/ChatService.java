@@ -25,5 +25,5 @@ public interface ChatService {
 
     List<List<ChatVO>> getChatVOSS(Long sid, List<Long> rids);
 
-    void deleteChat(Long chatId);
+    Long deleteChat(Long chatId);
 }

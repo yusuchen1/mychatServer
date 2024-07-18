@@ -147,7 +147,14 @@ public class ChatController {
     public Result delChat(@RequestParam("chatId") Long chatId){
         Long userId = BaseContext.getContext();
         log.info("正在撤回消息,userId:{},chatId:{}",userId,chatId);
-        chatService.deleteChat(chatId);
+        Long resId = chatService.deleteChat(chatId);
+
+        try {
+            chatUtil.CronyChatSend(userId, resId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return Result.success(MessageConstant.REVOKESUCCESS);
     }
 }
