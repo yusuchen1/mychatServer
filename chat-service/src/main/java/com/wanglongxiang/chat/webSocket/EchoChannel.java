@@ -96,7 +96,7 @@ public class EchoChannel {
         List<Long> cronyIds = cronyClient.getCronyIds(uid);
         for (Long cronyId : cronyIds) {
             Session session = sessions.get(cronyId);
-            if(session != null){
+            if(session != null && session.isOpen()){
                 if(online){
                     log.info("正在给uid:{}推送好友uid:{}上线消息",cronyId,uid);
                 }else {

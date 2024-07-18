@@ -57,4 +57,16 @@ public class CommonServiceImpl implements CommonService {
         return cronyGroupListsByUid;
     }
 
+    @Override
+    public void online(Long userId) {
+        SetOperations setOperations = redisTemplate.opsForSet();
+        setOperations.add(RedisConstant.ONLINE,userId);
+    }
+
+    @Override
+    public void offLine(Long userId) {
+        SetOperations setOperations = redisTemplate.opsForSet();
+        setOperations.remove(RedisConstant.ONLINE,userId);
+    }
+
 }

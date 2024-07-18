@@ -29,9 +29,6 @@ public class CommonController {
     @Autowired
     CommonService commonService;
 
-    @Autowired
-    RedisTemplate redisTemplate;
-
 
     @GetMapping("/leftMenu")
     @ApiOperation("获取主页的左侧菜单")
@@ -49,15 +46,13 @@ public class CommonController {
     @ApiOperation("用户上线")
     public void onLine(@RequestParam("userId") Long userId){
         log.info("用户上线,userId:{}",userId);
-        SetOperations setOperations = redisTemplate.opsForSet();
-        setOperations.add(RedisConstant.ONLINE,userId);
+        commonService.online(userId);
     }
 
     @GetMapping("/offline")
     @ApiOperation("用户下线")
     public void offLine(@RequestParam("userId") Long userId){
         log.info("用户下线,userId:{}",userId);
-        SetOperations setOperations = redisTemplate.opsForSet();
-        setOperations.remove(RedisConstant.ONLINE,userId);
+        commonService.offLine(userId);
     }
 }
