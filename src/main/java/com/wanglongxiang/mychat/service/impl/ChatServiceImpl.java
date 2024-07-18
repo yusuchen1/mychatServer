@@ -92,7 +92,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void deleteChat(Long chatId) {
+    public Long deleteChat(Long chatId) {
         Chat chat = chatMapper.selectById(chatId);
         LocalDateTime chatTime = chat.getTime();
         LocalDateTime now = LocalDateTime.now();
@@ -101,6 +101,7 @@ public class ChatServiceImpl implements ChatService {
         }else {
             throw new BaseException(MessageConstant.REVOKETIMEOUT);
         }
+        return chat.getReceiveUid();
     }
 
     private List<ChatVO> getChatVOS(Long sid, Long rid) {

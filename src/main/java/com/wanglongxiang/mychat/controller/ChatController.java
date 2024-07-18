@@ -85,7 +85,15 @@ public class ChatController {
     public Result delChat(@RequestParam("chatId") Long chatId){
         Long userId = BaseContext.getContext();
         log.info("正在撤回消息,userId:{},chatId:{}",userId,chatId);
-        chatService.deleteChat(chatId);
+        Long resId = chatService.deleteChat(chatId);
+
+        //        好友之间互发消息,webSocket给双方发送更新后的消息
+        try {
+            chatUtil.CronyChatSend(userId, resId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return Result.success(MessageConstant.REVOKESUCCESS);
     }
 }

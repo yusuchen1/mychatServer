@@ -5,7 +5,7 @@ spring:
     password: ${mychat.jdbc.pw}
     url: jdbc:mysql://${mychat.jdbc.localhost}:${mychat.jdbc.port}/${mychat.jdbc.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
   profiles:
-    active: local
+    active: dev
   redis:
     database: ${mychat.redis.database}
     host: ${mychat.redis.host}

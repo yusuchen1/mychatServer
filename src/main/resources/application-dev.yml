@@ -5,3 +5,8 @@ mychat:
     localhost: mysql
     port: 3306
     database: mychat
+  redis:
+    host: redis
+    port: 6379
+    password: 123
+    database: 0
