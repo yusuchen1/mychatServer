@@ -228,7 +228,6 @@ public class GroupServiceImpl implements GroupService {
                 groupListItem.setId(group.getId());
                 groupListItem.setAvatar(group.getAvatar());
                 groupListItem.setName(group.getName());
-//            TODO 插入群组的消息集合
                 List<ChatVO> chatVOS = chatClient.getChatVOSByGid(group.getId());
                 groupListItem.setChats(chatVOS);
                 groupList.add(groupListItem);

@@ -8,10 +8,7 @@ import com.wanglongxiang.api.dto.RegisterUserDTO;
 import com.wanglongxiang.api.dto.SearchDTO;
 import com.wanglongxiang.api.vo.*;
 import com.wanglongxiang.mychat.common.ResultPage;
-import com.wanglongxiang.mychat.common.constant.CronyConstant;
-import com.wanglongxiang.mychat.common.constant.GroupConstant;
-import com.wanglongxiang.mychat.common.constant.MessageConstant;
-import com.wanglongxiang.mychat.common.constant.UserConstant;
+import com.wanglongxiang.mychat.common.constant.*;
 import com.wanglongxiang.mychat.exception.NoPermissionExecption;
 import com.wanglongxiang.user.exception.UserException.PasswordErrorException;
 import com.wanglongxiang.user.exception.UserException.UserExistException;
@@ -20,6 +17,7 @@ import com.wanglongxiang.user.mapper.UserMapper;
 import com.wanglongxiang.user.pojo.entity.User;
 import com.wanglongxiang.user.service.UserService;
 import com.wanglongxiang.user.utils.AliossUtil;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -49,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     AliossUtil aliossUtil;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @Override
     public User login(LoginUserDTO loginUserDTO) {
@@ -178,7 +179,7 @@ public class UserServiceImpl implements UserService {
         if(!u.getNickname().equals(user.getNickname())){
             HashMap<Long,String> map = new HashMap<>();
             map.put(user.getId(),user.getNickname());
-            momentClient.updateNickname(map);
+            rabbitTemplate.convertAndSend(MQConstant.EXCHANGE_UPDATEUSER,MQConstant.KEY_UPDATEUSER,map);
         }
     }
 
